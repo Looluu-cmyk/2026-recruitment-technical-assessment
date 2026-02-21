@@ -44,7 +44,12 @@ def parse():
 # Takes in a recipeName and returns it in a form that 
 def parse_handwriting(recipeName: str) -> Union[str | None]:
 	# TODO: implement me
-	fixedRecipeName = " ".join(''.join([c for c in recipeName.replace('-', ' ').replace('_', ' ').lower() if c.isalpha() or c == ' ']).split()).title()
+	fixedRecipeName = " ".join(
+		''.join(
+			[c for c in recipeName.replace('-', ' ').replace('_', ' ').lower() if c.isalpha() or c == ' ']
+		).split()
+	).title()
+
 	if len(fixedRecipeName) == 0:
 		return None
 	return fixedRecipeName
@@ -79,8 +84,46 @@ def create_entry():
 @app.route('/summary', methods=['GET'])
 def summary():
 	# TODO: implement me
-	return 'not implemented', 500
+	global cookbook
 
+	name = request.args.get('name').title()
+	if not cookbook or not name in cookbook:
+		return 'no recipe found', 400
+	
+	if cookbook[name].get('type') == 'ingredient':
+		return 'name specified is an ingredient', 400
+	
+	try:
+		cookTime, ingredients = recr_search(name)
+		response = {
+			"name": name,
+			"cookTime": cookTime,
+			"ingredients": [{"name": ingredient, "quantity": quantity} for ingredient, quantity in ingredients.items()]
+		}
+		return response, 200
+	except Exception as e:
+		return 'missing recipe/ingredient from cookbook', 400
+
+def recr_search(name):
+	global cookbook
+
+	if not name in cookbook:
+		raise Exception('could not find name')
+	
+	entry = cookbook[name]
+	if entry.get('type') == 'ingredient':
+		return entry.get('cookTime'), {name: 1}
+	else:
+		cookTime = 0
+		ingredientList = {}
+		for item in entry.get('requiredItems'):
+			baseCook, baseList = recr_search(item.get('name'))
+			cookTime += baseCook * item.get('quantity')
+			newIngredientList = {key: ingredientList.get(key, 0) + baseList.get(key, 0) * item.get('quantity') for key in set(ingredientList) | set(baseList)}
+			ingredientList = newIngredientList
+		
+		return cookTime, ingredientList
+	
 
 # =============================================================================
 # ==== DO NOT TOUCH ===========================================================
