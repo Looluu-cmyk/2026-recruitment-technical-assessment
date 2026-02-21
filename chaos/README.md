@@ -60,7 +60,7 @@ CREATE TABLE playlist_songs (
   primary key (playlist_id, song_id),
   foreign key (playlist_id) references playlists(id) on DELETE CASCADE,
   foreign key (song_id) references songs(id) on DELETE CASCADE
-)
+);
 ```
 
 ### b)
