@@ -55,7 +55,16 @@ def parse_handwriting(recipeName: str) -> Union[str | None]:
 @app.route('/entry', methods=['POST'])
 def create_entry():
 	# TODO: implement me
-	return 'not implemented', 500
+	data = request.json
+	
+	type = data.get('type')
+	if type != 'recipe' and type != 'ingredient':
+		return 'conditions violated!', 400
+	
+	if type == 'ingredient' and data.get('cookTime') < 0:
+		return 'conditions violated!', 400
+
+	return '', 200
 
 
 # [TASK 3] ====================================================================
