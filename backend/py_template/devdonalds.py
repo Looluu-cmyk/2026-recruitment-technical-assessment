@@ -64,6 +64,13 @@ def create_entry():
 	if type == 'ingredient' and data.get('cookTime') < 0:
 		return 'conditions violated!', 400
 
+	global cookbook
+	if cookbook is None:
+		cookbook = []
+	elif any(entry.get('name') == data.get('name') for entry in cookbook):
+		return 'conditions violated!', 400
+	
+	cookbook.append(data)
 	return '', 200
 
 
