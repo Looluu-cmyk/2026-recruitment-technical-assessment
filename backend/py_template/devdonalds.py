@@ -66,11 +66,11 @@ def create_entry():
 
 	global cookbook
 	if cookbook is None:
-		cookbook = []
-	elif any(entry.get('name') == data.get('name') for entry in cookbook):
+		cookbook = {}
+	elif data.get('name') in cookbook:
 		return 'conditions violated!', 400
 	
-	cookbook.append(data)
+	cookbook[data.get('name')] = data
 	return '', 200
 
 
