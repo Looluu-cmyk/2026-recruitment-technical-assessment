@@ -72,27 +72,30 @@ function App() {
             Sort
           </button>
         </div>
-        <div className="border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2">
           {pictures.map((picture) => {
-            return <div>picture</div>;
+            return (
+              <div className="relative">
+                <div className="absolute flex items-center h-full w-full justify-end px-2 sm:items-start sm:py-4">
+                  <div className="bg-white py-2 px-4 rounded-2xl">
+                    {<span className="sm:hidden">9 / 10</span>}
+                    {<span className="hidden sm:inline">9 rooms available</span>}
+                  </div>
+                </div>
+                <div className="absolute flex items-center h-full w-full text-white px-2 text-lg sm:items-end sm:py-4">
+                  <div className="sm:bg-orange-400 sm:px-4 sm:w-full sm:rounded-xl sm:py-2 lg:text-sm">
+                    {picture[1]}
+                  </div>
+                </div>
+                <img
+                  className="aspect-4/1 rounded-xl object-cover sm:aspect-5/3 lg:aspect-5/6"
+                  src={picture[0]}
+                />
+              </div>
+            );
           })}
         </div>
       </div>
-
-      {/*
-      <ul className="grid grid-cols-5 gap-4 px-2">
-        {pictures.map((picture) => {
-          return (
-            <div className="relative">
-              <div className="absolute right-2 top-2 bg-white py-2 px-3 font-semibold rounded-2xl">10 rooms available</div>
-              <img className="aspect-7/8 rounded-xl" src={picture[0]} />
-              <div className="relative p-3">
-                <div className="absolute bg-orange-400 p-3 justify-self-center bottom-0 font-semibold tracking-wide text-white w-full m-3">{picture[1]}</div>
-              </div>
-            </div>
-          );
-        })}
-      </ul> */}
     </>
   );
 }
