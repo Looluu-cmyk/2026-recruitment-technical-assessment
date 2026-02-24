@@ -17,42 +17,69 @@ function App() {
     ["/cseBuilding.webp", "Computer Science & Eng (K17)"],
   ];
 
-  const icons = [];
+  const icons = [
+    "/search_orange.svg",
+    "/grid_view.svg",
+    "/map.svg",
+    "/dark_mode.svg",
+  ];
 
   const handleClick = () => setOpen(!open);
 
   return (
     <>
-      <div className="px-3 font-semibold">
-        <div className="flex justify-between">
-          <div className="flex items-center text-orange-400 text-2xl">
-            <img src={open ? '/freeRoomsLogo.png' : '/freeroomsDoorClosed.png'} width={40} onClick={handleClick}/>
+      <div className="px-3 font-semibold mt-2">
+        <div className="flex">
+          <div className="flex items-center text-orange-400 text-2xl hover:cursor-pointer">
+            <img
+              src={open ? "/freeRoomsLogo.png" : "/freeroomsDoorClosed.png"}
+              width={40}
+              onClick={handleClick}
+            />
             <div className="hidden sm:inline">Freerooms</div>
           </div>
-          <div>Icons</div>
+          <div className="flex gap-1 grow justify-end">
+            {icons.map((icon) => {
+              return (
+                <div
+                  className={
+                    "border-orange-400 border rounded-sm aspect-square place-items-center place-content-center hover:cursor-pointer" +
+                    (icon === "/grid_view.svg" ? " bg-orange-400" : "")
+                  }
+                >
+                  <img src={icon} />
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <hr className="w-screen border-gray-300 my-2"/>
+        <hr className="w-screen border-gray-300 my-2" />
         <div className="flex flex-wrap sm:flex-nowrap justify-between gap-2 mb-2">
-          <input type="text" placeholder="Search for a building..." className="w-full sm:order-2 border-gray-400 border max-w-[800px] px-2 py-1 rounded-md"/>
-          <div className="order-1 border">Button 1</div>
-          <div className="order-3 border">Button 2</div>
+          <div className="w-full sm:order-2 border-gray-400 border max-w-[800px] px-2 py-1 rounded-md flex gap-1">
+            <img src="/search_regular.svg" />
+            <input
+              type="text"
+              placeholder="Search for a building..."
+              className="w-full"
+            />
+          </div>
+          <button className="order-1 text-orange-400 border-orange-400 border-2 px-2 rounded-md min-w-30 flex items-center justify-center gap-2 hover:cursor-pointer">
+            <img src="/filter_alt.svg" />
+            Filters
+          </button>
+          <button className="order-3 text-orange-400 border-orange-400 border-2 px-2 rounded-md min-w-30 flex items-center justify-center gap-2 hover:cursor-pointer">
+            <img src="/filter_list.svg" />
+            Sort
+          </button>
         </div>
         <div className="border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
-          {pictures.map((picture) => {return (<div>picture</div>)})}
+          {pictures.map((picture) => {
+            return <div>picture</div>;
+          })}
         </div>
       </div>
 
-      {/* <div className="w-full flex justify-between px-2">
-        <div>Icons</div>
-      </div>
-      <hr className="my-3"/>
-      <div className="w-full flex justify-between mb-2 px-2 gap-2">
-        <button className="order-1 text-orange-400 font-semibold border-orange-400 border-2 p-2 rounded-md min-w-30 flex items-center justify-center gap-2">
-          <img src='/filter_alt_24dp_F19E39_FILL0_wght400_GRAD0_opsz24.png'/>
-          Filters
-        </button>
-        <button className="order-3 text-orange-400 font-semibold border-orange-400 border-2 p-2 rounded-md min-w-30 flex items-center justify-center gap-2">Sort</button>
-      </div>
+      {/*
       <ul className="grid grid-cols-5 gap-4 px-2">
         {pictures.map((picture) => {
           return (
